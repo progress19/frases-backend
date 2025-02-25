@@ -1,0 +1,44 @@
+
+
+#selectLang {
+  z-index: 9999;
+ }
+
+ .languageSelector {
+  width: 70px;
+  right: 0;
+}
+
+#languageOptions { position: fixed; }
+
+.loader_flow {
+  width: 50px;
+  padding: 8px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff;
+  --_m: 
+  conic-gradient(#fff0 10%,#fff),
+  linear-gradient(#fff 0 0) content-box;
+  -webkit-mask: var(--_m);
+          mask: var(--_m);
+  -webkit-mask-composite: source-out;
+          mask-composite: subtract;
+  animation: l3 1s infinite linear;
+}
+@keyframes l3 {to{transform: rotate(1turn)}}
+
+.loader-container {
+  display: flex;
+  justify-content: center;
+}
+
+/* Eliminar flechas de los inputs number */
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type=number] {
+    -moz-appearance: textfield;
+}

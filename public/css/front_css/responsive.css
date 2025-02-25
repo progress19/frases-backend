@@ -1,0 +1,19 @@
+
+
+/* Estilos para pantallas más pequeñas (hasta 640px de ancho) */
+@media (max-width: 640px) {
+  
+  .box-show { margin-inline: 15px;  }
+  /*#video { top: 70px; min-height: 288px; }*/
+
+}
+
+/* Estilos para pantallas medianas (entre 641px y 1024px de ancho) */
+@media (min-width: 641px) and (max-width: 1024px) {
+  /* Estilos específicos para pantallas medianas */
+}
+
+/* Estilos para pantallas grandes (más de 1024px de ancho) */
+@media (min-width: 1025px) {
+  /* Estilos específicos para pantallas grandes */
+}
