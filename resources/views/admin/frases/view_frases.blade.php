@@ -26,6 +26,7 @@
                         <tr>
                             <th>id</th>
                             <th>Frase</th>
+                            <th>Count</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -55,11 +56,12 @@
                 columns: [
                     { data: 'id', name: 'id' },
                     { data: 'frase', name: 'frase' },   
+                    { data: 'count', name: 'count' },   
                     { data: 'acciones', title: '', orderable: false, searchable: false, className: 'dt-body-center' },
                 ],
                 language: { "url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json" },
                 order: [[0, 'asc']],
-/*
+                /*
                 drawCallback: function() {
                     var elems = Array.prototype.slice.call(document.querySelectorAll('.estado-chk'));
                     elems.forEach(function(html) {
@@ -72,7 +74,7 @@
                         });
                     });
                 }
-*/
+                */
             });
 
         });

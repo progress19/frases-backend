@@ -37,7 +37,15 @@ class FraseController extends Controller
 
     public function aleatoria(): JsonResponse
     {
-        $frase = Frase::inRandomOrder()->first();
+        $minCount = Frase::min('count');
+        $frase = Frase::where('count', $minCount)
+                      ->inRandomOrder()
+                      ->first();
+        
+        if ($frase) {
+            $frase->increment('count');
+        }
+
         return response()->json([
             'frase' => $frase ? $frase->frase : 'No hay frases disponibles en este momento.',
         ]);
