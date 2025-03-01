@@ -270,3 +270,46 @@ $("#edit_frase").validate({
     },
 });
 
+/* tipos */
+
+$("#add_tipo").validate({
+    event: "blur",
+    rules: { 
+        nombre: {
+            required: true,
+          },
+     },
+    messages: { 
+        nombre: {
+            required: "Este campo es obligatorio.",
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#add_tipo")[0].submit();
+    },
+});
+
+$("#edit_tipo").validate({
+    event: "blur",
+    rules: { 
+        nombre: {
+            required: true,
+          },
+     },
+     messages: { 
+        nombre: {
+            required: "Este campo es obligatorio.",
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#edit_tipo")[0].submit();
+    },
+});

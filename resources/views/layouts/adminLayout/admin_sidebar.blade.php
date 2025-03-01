@@ -35,6 +35,13 @@
 
                   <li><a href="{{ url('/admin/view-frases') }}"><i class="fa fa-comment" aria-hidden="true"></i> Frases</a></li>
 
+                  <li><a><i class="fa fa-list" aria-hidden="true"></i> Tipos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-tipo') }}">Nuevo tipo</a></li>
+                      <li><a href="{{ url('/admin/view-tipos') }}">Ver tipos</a></li>
+                    </ul>
+                  </li>
+
                   {{--<li><a href="{{ url('/admin/edit-config/1') }}"><i class="fa fa-gear"></i> Configuración</a></li>--}}                  
                   
                   <li><a><i class="fa fa-users"></i> Usuarios <span class="fa fa-chevron-down"></span></a>

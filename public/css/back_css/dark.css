@@ -5468,3 +5468,36 @@ div.dataTables_processing > div:last-child > div { background: var(--c-4) ; }
   font-size: 21px; /* Tamaño grande para las estrellas */
   color: #ffc107; /* Color amarillo */
 }
+
+.ms-container .ms-selectable li.ms-elem-selectable, .ms-container .ms-selection li.ms-elem-selection {
+  border-bottom: 1px var(--c-5) solid !important;
+  padding: 5px 10px;
+  color: var(--c-7);
+  padding: 5px 10px;
+}
+
+.ms-container .ms-selectable, .ms-container .ms-selection {
+  background: var(--c-3) !important;
+  border-radius: 5px;
+}
+
+.ms-container .ms-list {
+  border: 0 solid #ccc !important;
+ }
+
+ .search-input {
+  background-color: var(--c-3);
+  color: white;
+  border: 0;
+  padding: 11px;
+} 
+
+.popover .arrow {display: none;}
+
+.select2-container--default .select2-results__option[aria-disabled="true"] {
+  color: #555 !important;
+}
+
+.ms-elem-selectable.ms-hover, .ms-selected.ms-hover {
+  color: white !important;
+}

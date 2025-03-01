@@ -8,4 +8,11 @@ class Frase extends Model
 {
     protected $table = 'frases';
     public $timestamps = false;  // Si no tienes columnas de timestamps
+
+    public function tipos()
+    {
+        return $this->belongsToMany(\App\Tipo::class, 'frases_pivot_tipos', 'frase_id', 'tipo_id')->withPivot('created_at');
+    }
+    
+
 }

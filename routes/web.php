@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UsuarioController; 
 use App\Http\Controllers\TraduccionController; 
 use App\Http\Controllers\ConfigController; 
+use App\Http\Controllers\TipoController; 
 
 use App\Http\Controllers\Controller; 
 use App\Http\Controllers\HomeController; 
@@ -40,7 +41,8 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('dataUsuarios', [UsuarioController::class, 'getData'])->name('dataUsuarios');
 	Route::get('dataFrases', [FraseController::class, 'getData'])->name('dataFrases');
-	
+	Route::get('dataTipos', [TipoController::class, 'getData'])->name('dataTipos');
+		
 	//cambiar estados desde datatables
 	Route::get('cambiarEstado/{id}/{model}', [AdminController::class ,'cambiarEstado']);
 			
@@ -65,6 +67,12 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::match(['get','post'],'/admin/delete-frase/{id}',[FraseController::class, 'deleteFrase']);
 	Route::match(['get', 'post'], 'admin/add-frase', [FraseController::class, 'addFrase']);
 	Route::get('/admin/view-frases',[FraseController::class, 'viewFrases']);
+
+	//Tipos (Admin)
+	Route::match(['get','post'],'/admin/add-tipo',[TipoController::class, 'addTipo']);
+	Route::match(['get','post'],'/admin/edit-tipo/{id}',[TipoController::class, 'editTipo']);
+	Route::match(['get','post'],'/admin/delete-tipo/{id}',[TipoController::class, 'deleteTipo']);
+	Route::get('/admin/view-tipos',[TipoController::class, 'viewTipos']);
 	
 });
 

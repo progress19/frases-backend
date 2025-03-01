@@ -10,9 +10,11 @@ use Illuminate\Support\Facades\Input;
 use Auth;
 use Session;
 use App\Fun;
+use App\Tipo;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class FraseController extends Controller
 {
@@ -54,13 +56,27 @@ class FraseController extends Controller
     public function editFrase(Request $request, $id = null) {
         if ($request->isMethod('post')) {
             $data = $request->all();
+
+            /* save Tipos */
+            $datenow = Carbon::now();
+            $frase = Frase::find($id)->tipos()->detach();
+
+            if ($request->tipos) {
+                $frase = Frase::find($id);
+                foreach ($request->tipos as $idtipo) {
+                    $frase->tipos()->attach($idtipo, ['created_at' => $datenow]);
+                }
+            }
+
             Frase::where(['id'=>$id])->update([
                 'frase' => $data['frase'],  
             ]);
             return redirect('/admin/view-frases')->with('flash_message','Frase actualizada correctamente...');
         }
+
+        $tipos = Tipo::where(['estado' => 1])->orderBy('nombre', 'asc')->get();
         $frase = Frase::where(['id'=>$id])->first();
-        return view('admin.frases.edit_frase')->with(compact('frase'));
+        return view('admin.frases.edit_frase')->with(compact('frase','tipos'));
     }
 
     /*********************************************************/
