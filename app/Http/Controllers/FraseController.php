@@ -90,7 +90,8 @@ class FraseController extends Controller
     		$opinion->save();
     		return redirect('/admin/view-frases')->with('flash_message','Frase creada correctamente...');
     	}
-        return view('admin.frases.add_frase');
+        $tipos = Tipo::where(['estado' => 1])->orderBy('nombre', 'asc')->get();
+        return view('admin.frases.add_frase')->with(compact('tipos'));
     }
 
     /*********************************************************/
