@@ -85,9 +85,20 @@ class FraseController extends Controller
     public function addFrase(Request $request) {
     	if ($request->isMethod('post')) {
     		$data = $request->all();
-    		$opinion = new Frase;
-            $opinion->frase = $data['frase'];
-    		$opinion->save();
+    		$frase = new Frase;
+            $frase->frase = $data['frase'];
+    		$frase->save();
+
+            /* Tipos */
+
+            $datenow = Carbon::now();
+
+            if ($request->tipos) {
+                foreach ($request->tipos as $idtipo) {
+                    $frase->tipos()->attach($idtipo, ['created_at' => $datenow]);
+                }
+            }
+
     		return redirect('/admin/view-frases')->with('flash_message','Frase creada correctamente...');
     	}
         $tipos = Tipo::where(['estado' => 1])->orderBy('nombre', 'asc')->get();
