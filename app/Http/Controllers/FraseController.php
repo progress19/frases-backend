@@ -117,4 +117,46 @@ class FraseController extends Controller
         return view('admin.frase.view_frases');
     }
 
+    public function frasePorTipo($tipoNombre): JsonResponse
+    {
+        $minCount = Frase::whereHas('tipos', function($query) use ($tipoNombre) {
+            $query->where('nombre', $tipoNombre);
+        })->min('count');
+
+        $frase = Frase::whereHas('tipos', function($query) use ($tipoNombre) {
+            $query->where('nombre', $tipoNombre);
+        })
+        ->where('count', $minCount)
+        ->inRandomOrder()
+        ->first();
+
+        if ($frase) {
+            $frase->increment('count');
+        }
+
+        return response()->json([
+            'frase' => $frase ? $frase->frase : "No hay frases {$tipoNombre}s disponibles en este momento.",
+        ]);
+    }
+
+    public function fraseGeneral(): JsonResponse
+    {
+        return $this->frasePorTipo('general');
+    }
+
+    public function fraseBudista(): JsonResponse
+    {
+        return $this->frasePorTipo('budista');
+    }
+
+    public function fraseEstoica(): JsonResponse
+    {
+        return $this->frasePorTipo('estoica');
+    }
+
+    public function fraseMetafisica(): JsonResponse
+    {
+        return $this->frasePorTipo('metafisica');
+    }
+
 }

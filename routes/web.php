@@ -86,6 +86,9 @@ Route::get('/home', [HomeController::class, 'index']);
 
 Route::get('/frase-aleatoria', [FraseController::class, 'aleatoria']);
 
-
+Route::get('/frase-general', [FraseController::class, 'fraseGeneral']);
+Route::get('/frase-budista', [FraseController::class, 'fraseBudista']);
+Route::get('/frase-estoica', [FraseController::class, 'fraseEstoica']);
+Route::get('/frase-metafisica', [FraseController::class, 'fraseMetafisica']);
 
 
