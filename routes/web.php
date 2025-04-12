@@ -41,6 +41,10 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('dataUsuarios', [UsuarioController::class, 'getData'])->name('dataUsuarios');
 	Route::get('dataFrases', [FraseController::class, 'getData'])->name('dataFrases');
+
+	Route::get('dataFrasesTipo', [FraseController::class, 'getDataByTipo'])->name('dataFrasesTipo');
+
+
 	Route::get('dataTipos', [TipoController::class, 'getData'])->name('dataTipos');
 		
 	//cambiar estados desde datatables
@@ -80,7 +84,7 @@ Route::post('/proxy/deepl', [TraduccionController::class, 'translate']);
 
 /* FRONTEND */
 
-Route::redirect('/', app()->getLocale());
+//Route::redirect('/', app()->getLocale());
 
 Route::get('/home', [HomeController::class, 'index']);
 

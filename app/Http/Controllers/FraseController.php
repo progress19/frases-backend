@@ -20,7 +20,9 @@ class FraseController extends Controller
 {
 
     public function viewFrases() {
-        return view('admin.frases.view_frases');
+        $tipos = Tipo::where(['estado' => 1])->orderBy('nombre', 'asc')->pluck( 'nombre', 'id');
+
+        return view('admin.frases.view_frases')->with(compact('tipos'));
     }
 
     public function getData() {
@@ -157,6 +159,28 @@ class FraseController extends Controller
     public function fraseMetafisica(): JsonResponse
     {
         return $this->frasePorTipo('metafisica');
+    }
+
+    public function getDataByTipo(Request $request) 
+    {
+        $tipo_id = $request->get('tipo');
+        
+        $frases = Frase::select('frases.*')
+            ->when($tipo_id, function($query) use ($tipo_id) {
+                return $query->join('frases_pivot_tipos', 'frases.id', '=', 'frases_pivot_tipos.frase_id')
+                            ->where('frases_pivot_tipos.tipo_id', $tipo_id);
+            });
+
+        return Datatables::of($frases)
+            ->editColumn('frase', function ($frase) {
+                return "<a title='Clic para editar...' href='edit-frase/$frase->id'>  ".Str::limit($frase->frase, 150)." </a>"; 
+            })
+            ->editColumn('acciones', function ($frase) {
+                return '<a href="delete-frase/'.$frase->id.'" class="delReg"><i class="fa fa-trash-o" aria-hidden="true"></i></a>';
+            })
+            ->setRowAttr([ 'id' => function ($frase) { return $frase->id; } ])
+            ->rawColumns(['id','frase','acciones'])
+            ->make(true);
     }
 
 }

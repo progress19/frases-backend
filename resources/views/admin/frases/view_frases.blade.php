@@ -18,6 +18,19 @@
                 <div class="clearfix"></div>
             </div>
 
+            <div class="col-md-3">
+                <div class="form-group">
+                    {!! Form::label('tipos', 'Tipos') !!}
+                    {!! Form::select('tipos', $tipos, null, [
+                        'id' => 'tipos',
+                        'placeholder' => 'Todos',
+                        'class' => 'form-control select2',
+                        'data-toggle' => 'tooltip',
+                        'title' => 'Seleccione Tipo'
+                    ]) !!}
+                </div>
+            </div>
+
             <div class="x_content">
 
                 <table id="table" class="hover table table-striped table-bordered dt-responsive nowrap" cellspacing="0"
@@ -48,7 +61,7 @@
     <script>
         
         $(function() {
-            $('#table').DataTable({
+            var table = $('#table').DataTable({
                 processing: true,
                 serverSide: true,
                 pageLength: 100,
@@ -77,8 +90,19 @@
                 */
             });
 
+
+            $('#tipos').change(function() {
+                table.ajax.url('{!! route('dataFrasesTipo') !!}?tipo=' + $(this).val()).load();
+            });
+
         });
 
+
+        /*
+        $('#desde, #hasta, #usuario, #estado, #idAsignado').change(function() {
+            table.ajax.reload();
+        });
+*/
         $(document).ready(function() {
             $('#table tbody').on('click', '.delReg', function() {
                 if (confirm('Está seguro de eliminar el registro ?')) {
@@ -97,6 +121,8 @@
                 }
             });
         }
+
+        $('.select2').select2();
 
     </script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"
