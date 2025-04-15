@@ -11,9 +11,7 @@
             <div class="x_title">
                 <h2><i class="fa fa-comment" aria-hidden="true"></i> Frases<small></small></h2>
                 <ul class="nav navbar-right panel_toolbox">
-                    <a href="{{ url('/admin/add-frase') }}">
-                        <button id="send" type="submit" class="btn btn-primary pull-right"><i class="fa fa-plus" aria-hidden="true"></i> Nueva frase</button>
-                    </a>
+
                 </ul>
                 <div class="clearfix"></div>
             </div>
@@ -30,6 +28,10 @@
                     ]) !!}
                 </div>
             </div>
+
+            <a href="{{ url('/admin/add-frase') }}">
+                <button id="send" type="submit" class="btn btn-primary pull-right"><i class="fa fa-plus" aria-hidden="true"></i> Nueva frase</button>
+            </a>
 
             <div class="x_content">
 

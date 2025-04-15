@@ -38,13 +38,27 @@ class AdminController extends Controller {
     	return view('admin.admin_login');
     }
 
-    public function dashboard(Request $request) {
-        if ($request->isMethod('post')) {
-            $data = $request->all();
-            return redirect('/admin/dashboard')->with('flash_message','Notas actualizadas...');
+    public function dashboard() {
+        // Total count of phrases
+        $frases = \App\Models\Frase::count();
+
+        // Sum of all count values (total times phrases have been shown)
+        $frases_mostradas = \App\Models\Frase::sum('count');
+
+        // Get all types with their phrase counts
+        $tipos = \App\Tipo::where('estado', 1)->get();
+
+        // For each type, calculate the total phrases and total count values
+        foreach ($tipos as $tipo) {
+            // Count all phrases of this type
+            $tipo->total_frases = $tipo->belongsToMany(\App\Models\Frase::class, 'frases_pivot_tipos', 'tipo_id', 'frase_id')->count();
+
+            // Sum the count values of all phrases of this type
+            $tipo->frases_mostradas = $tipo->belongsToMany(\App\Models\Frase::class, 'frases_pivot_tipos', 'tipo_id', 'frase_id')
+                ->sum('frases.count');
         }
-        $config = Config::where(['id'=>1])->first();
-        return view('admin.dashboard')->with(compact('config')); 
+
+        return view('admin.dashboard', compact('frases', 'frases_mostradas', 'tipos'));
     }
 
     public function settings() {
