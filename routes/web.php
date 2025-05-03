@@ -11,11 +11,14 @@ use App\Http\Controllers\TipoController;
 use App\Http\Controllers\Controller; 
 use App\Http\Controllers\HomeController; 
 
-
 use App\Mail\TestMailable; 
 
 use App\Http\Controllers\FraseController;
-
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\TemaController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\OrdenController;
+use App\Http\Controllers\PagoController;
 
 Auth::routes();
 
@@ -44,8 +47,13 @@ Route::group(['middleware' => ['auth']], function () {
 
 	Route::get('dataFrasesTipo', [FraseController::class, 'getDataByTipo'])->name('dataFrasesTipo');
 
-
 	Route::get('dataTipos', [TipoController::class, 'getData'])->name('dataTipos');
+	Route::get('dataPosts', [PostController::class, 'getData'])->name('dataPosts');
+	Route::get('dataPostsTema', [PostController::class, 'getDataByTema'])->name('dataPostsTema');
+	Route::get('dataTemas', [TemaController::class, 'getData'])->name('dataTemas');
+	Route::get('dataClientes', [ClienteController::class, 'getData'])->name('dataClientes');
+	Route::get('dataOrdenes', [OrdenController::class, 'getData'])->name('dataOrdenes');
+	Route::get('dataPagos', [PagoController::class, 'getPagos'])->name('dataPagos');
 		
 	//cambiar estados desde datatables
 	Route::get('cambiarEstado/{id}/{model}', [AdminController::class ,'cambiarEstado']);
@@ -77,6 +85,40 @@ Route::group(['middleware' => ['auth']], function () {
 	Route::match(['get','post'],'/admin/edit-tipo/{id}',[TipoController::class, 'editTipo']);
 	Route::match(['get','post'],'/admin/delete-tipo/{id}',[TipoController::class, 'deleteTipo']);
 	Route::get('/admin/view-tipos',[TipoController::class, 'viewTipos']);
+	
+	//Temas (Admin)
+	Route::match(['get','post'],'/admin/add-tema',[TemaController::class, 'addTema']);
+	Route::match(['get','post'],'/admin/edit-tema/{id}',[TemaController::class, 'editTema']);
+	Route::match(['get','post'],'/admin/delete-tema/{id}',[TemaController::class, 'deleteTema']);
+	Route::get('/admin/view-temas',[TemaController::class, 'viewTemas']);
+	
+	//Blog Posts (Admin)
+	Route::match(['get','post'],'/admin/add-post',[PostController::class, 'addPost']);
+	Route::match(['get','post'],'/admin/edit-post/{id}',[PostController::class, 'editPost']);
+	Route::match(['get','post'],'/admin/delete-post/{id}',[PostController::class, 'deletePost']);
+	Route::get('/admin/view-posts',[PostController::class, 'viewPosts']);
+	
+	//Clientes (Admin)
+	Route::match(['get','post'],'/admin/add-cliente',[ClienteController::class, 'addCliente']);
+	Route::match(['get','post'],'/admin/edit-cliente/{id}',[ClienteController::class, 'editCliente']);
+	Route::match(['get','post'],'/admin/delete-cliente/{id}',[ClienteController::class, 'deleteCliente']);
+	Route::get('/admin/view-clientes',[ClienteController::class, 'viewClientes']);
+	
+	//Órdenes (Admin)
+	Route::match(['get','post'],'/admin/add-orden',[OrdenController::class, 'addOrden']);
+	Route::match(['get','post'],'/admin/edit-orden/{id}',[OrdenController::class, 'editOrden']);
+	Route::match(['get','post'],'/admin/delete-orden/{id}',[OrdenController::class, 'deleteOrden']);
+	Route::get('/admin/view-ordenes',[OrdenController::class, 'viewOrdenes']);
+	Route::get('/admin/get-ordenes-by-cliente/{id}',[OrdenController::class, 'getOrdenesByCliente']);
+	
+	//Pagos (Admin)
+	Route::match(['get','post'],'/admin/add-pago',[PagoController::class, 'addPago']);
+	Route::match(['get','post'],'/admin/add-pago-orden/{id}',[PagoController::class, 'addPagoOrden']);
+	Route::match(['get','post'],'/admin/edit-pago/{id}',[PagoController::class, 'editPago']);
+	Route::match(['get','post'],'/admin/delete-pago/{id}',[PagoController::class, 'deletePago']);
+	Route::get('/admin/view-pagos',[PagoController::class, 'index']);
+	Route::get('/admin/pagos-by-orden/{id}',[PagoController::class, 'pagosByOrden']);
+	Route::get('/admin/pagos-by-cliente/{id}',[PagoController::class, 'pagosByCliente']);
 	
 });
 

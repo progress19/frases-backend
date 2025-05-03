@@ -1,10 +1,9 @@
-       
-        <div class="col-md-3 left_col">
+<div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
 
               <div class="logo-login">
-                  <h3>De Frases Up</h3>
+                  <h3>ML</h3>
               </div>
 
             </div>
@@ -32,6 +31,27 @@
                 <ul class="nav side-menu">
                   
                   <li><a href="{{ url('/admin/dashboard') }}"><i class="fa fa-home"></i> Home </a></li>
+                  
+                  <li><a><i class="fa fa-file-text-o" aria-hidden="true"></i> Órdenes <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-orden') }}">Nueva orden</a></li>
+                      <li><a href="{{ url('/admin/view-ordenes') }}">Ver órdenes</a></li>
+                    </ul>
+                  </li>
+                  
+                  <li><a><i class="fa fa-credit-card" aria-hidden="true"></i> Pagos <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-pago') }}">Nuevo pago</a></li>
+                      <li><a href="{{ url('/admin/view-pagos') }}">Ver pagos</a></li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-users" aria-hidden="true"></i> Clientes <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-cliente') }}">Nuevo cliente</a></li>
+                      <li><a href="{{ url('/admin/view-clientes') }}">Ver clientes</a></li>
+                    </ul>
+                  </li>
 
                   <li><a href="{{ url('/admin/view-frases') }}"><i class="fa fa-comment" aria-hidden="true"></i> Frases</a></li>
 
@@ -39,6 +59,20 @@
                     <ul class="nav child_menu">
                       <li><a href="{{ url('/admin/add-tipo') }}">Nuevo tipo</a></li>
                       <li><a href="{{ url('/admin/view-tipos') }}">Ver tipos</a></li>
+                    </ul>
+                  </li>
+
+                  <li><a><i class="fa fa-tags" aria-hidden="true"></i> Temas <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-tema') }}">Nuevo tema</a></li>
+                      <li><a href="{{ url('/admin/view-temas') }}">Ver temas</a></li>
+                    </ul>
+                  </li>
+                  
+                  <li><a><i class="fa fa-file-text" aria-hidden="true"></i> Blog <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu">
+                      <li><a href="{{ url('/admin/add-post') }}">Nuevo post</a></li>
+                      <li><a href="{{ url('/admin/view-posts') }}">Ver posts</a></li>
                     </ul>
                   </li>
 

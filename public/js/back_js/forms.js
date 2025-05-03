@@ -1,10 +1,26 @@
 $(document).ready(function () {
     /* delete register */
 
-    $(".delReg").click(function () {
-        if (confirm("Está seguro de eliminar el registro ?")) {
-            return true;
-        }
+    $(".delReg").click(function (e) {
+        e.preventDefault();
+        var deleteUrl = $(this).attr('href');
+        
+        Swal.fire({
+            title: '¿Está seguro?',
+            text: "Esta acción no se puede deshacer",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0089c0', // --c-9: azul claro intranet
+            cancelButtonColor: '#111827', // --c-1: fondo principal oscuro
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+            background: '#1f2937', // --c-2: fondo secundario
+            color: '#e5e7eb', // --c-6: texto claro
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = deleteUrl;
+            }
+        });
         return false;
     });
 
@@ -26,7 +42,7 @@ $(document).ready(function () {
                 //$('#').html(data);
                 //alert(data);
                 $("#modal_reset").modal("hide");
-                toast("Contraseña modificada!");
+                toastr.success("Contraseña modificada!");
             },
         });
     });
@@ -311,5 +327,253 @@ $("#edit_tipo").validate({
         $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
         $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
         $("#edit_tipo")[0].submit();
+    },
+});
+
+/* Posts */
+
+$("#add_post").validate({
+    event: "blur",
+    rules: { 
+        titulo: {
+            required: true,
+            minlength: 5
+        },
+        fecha_publicacion: {
+            required: true
+        },
+        tiempo_lectura: {
+            required: true,
+            number: true,
+            min: 1
+        },
+        contenido: {
+            required: true,
+            minlength: 50
+        }
+    },
+    messages: { 
+        titulo: {
+            required: "El título es obligatorio",
+            minlength: "El título debe tener al menos 5 caracteres"
+        },
+        fecha_publicacion: {
+            required: "La fecha de publicación es obligatoria"
+        },
+        tiempo_lectura: {
+            required: "El tiempo de lectura es obligatorio",
+            number: "Introduce un número válido",
+            min: "El tiempo de lectura debe ser al menos 1 minuto"
+        },
+        contenido: {
+            required: "El contenido es obligatorio",
+            minlength: "El contenido debe tener al menos 50 caracteres"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#add_post")[0].submit();
+    },
+});
+
+$("#edit_post").validate({
+    event: "blur",
+    rules: { 
+        titulo: {
+            required: true,
+            minlength: 5
+        },
+        fecha_publicacion: {
+            required: true
+        },
+        tiempo_lectura: {
+            required: true,
+            number: true,
+            min: 1
+        },
+        contenido: {
+            required: true,
+            minlength: 50
+        }
+    },
+    messages: { 
+        titulo: {
+            required: "El título es obligatorio",
+            minlength: "El título debe tener al menos 5 caracteres"
+        },
+        fecha_publicacion: {
+            required: "La fecha de publicación es obligatoria"
+        },
+        tiempo_lectura: {
+            required: "El tiempo de lectura es obligatorio",
+            number: "Introduce un número válido",
+            min: "El tiempo de lectura debe ser al menos 1 minuto"
+        },
+        contenido: {
+            required: "El contenido es obligatorio",
+            minlength: "El contenido debe tener al menos 50 caracteres"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#edit_post")[0].submit();
+    },
+});
+
+/* Clientes */
+
+$("#add_cliente").validate({
+    event: "blur",
+    rules: { 
+        nombre: {
+            required: true,
+            minlength: 3
+        },
+        email: {
+            email: true
+        },
+        cuit: {
+            digits: true
+        }
+    },
+    messages: { 
+        nombre: {
+            required: "El nombre es obligatorio",
+            minlength: "El nombre debe tener al menos 3 caracteres"
+        },
+        email: {
+            email: "Por favor ingrese un email válido"
+        },
+        cuit: {
+            digits: "El CUIT debe contener solo números"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#add_cliente")[0].submit();
+    },
+});
+
+$("#edit_cliente").validate({
+    event: "blur",
+    rules: { 
+        nombre: {
+            required: true,
+            minlength: 3
+        },
+        email: {
+            email: true
+        },
+        cuit: {
+            digits: true
+        }
+    },
+    messages: { 
+        nombre: {
+            required: "El nombre es obligatorio",
+            minlength: "El nombre debe tener al menos 3 caracteres"
+        },
+        email: {
+            email: "Por favor ingrese un email válido"
+        },
+        cuit: {
+            digits: "El CUIT debe contener solo números"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#edit_cliente")[0].submit();
+    },
+});
+
+/* Órdenes */
+
+$("#add_orden").validate({
+    event: "blur",
+    rules: { 
+        cliente_id: {
+            required: true
+        },
+        asunto: {
+            required: true,
+            minlength: 3
+        },
+        importe: {
+            required: true,
+            number: true,
+            min: 0
+        }
+    },
+    messages: { 
+        cliente_id: {
+            required: "Debe seleccionar un cliente"
+        },
+        asunto: {
+            required: "El asunto es obligatorio",
+            minlength: "El asunto debe tener al menos 3 caracteres"
+        },
+        importe: {
+            required: "El importe es obligatorio",
+            number: "Ingrese un valor numérico válido",
+            min: "El importe debe ser mayor o igual a 0"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#add_orden")[0].submit();
+    },
+});
+
+$("#edit_orden").validate({
+    event: "blur",
+    rules: { 
+        cliente_id: {
+            required: true
+        },
+        asunto: {
+            required: true,
+            minlength: 3
+        },
+        importe: {
+            required: true,
+            number: true,
+            min: 0
+        }
+    },
+    messages: { 
+        cliente_id: {
+            required: "Debe seleccionar un cliente"
+        },
+        asunto: {
+            required: "El asunto es obligatorio",
+            minlength: "El asunto debe tener al menos 3 caracteres"
+        },
+        importe: {
+            required: "El importe es obligatorio",
+            number: "Ingrese un valor numérico válido",
+            min: "El importe debe ser mayor o igual a 0"
+        }
+    },
+    debug: true,
+    errorElement: "label",
+    submitHandler: function (form) {
+        $("#send").prop("disabled", true).html('<i class="fa fa-circle-o-notch fa-spin fa-1x fa-fw"></i>');
+        $.ajaxSetup({ headers: {"X-CSRF-TOKEN": $('meta[name="csrf_token"]').attr("content"),},});
+        $("#edit_orden")[0].submit();
     },
 });

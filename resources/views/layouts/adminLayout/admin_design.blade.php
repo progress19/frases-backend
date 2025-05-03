@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('images/favicon_io/favicon-16x16.png') }}">
     <link rel="manifest" href="/site.webmanifest">
 
-    <title>De Frases Up | BackOffice </title>
+    <title>ML Up | BackOffice </title>
     {{-- CKEditor CDN --}}
     <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js"></script>
     <!-- Bootstrap -->
@@ -34,6 +34,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.12.1/r-2.3.0/datatables.min.css"/>
     <!-- Select2 -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+    <!-- SweetAlert -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.css" />
     <!-- Custom Theme Style -->
     <link href="{{ asset('css/back_css/dark.css') }}" rel="stylesheet">
     <!-- Custom Theme Style -->
@@ -43,6 +45,10 @@
     <!-- Switchery -->
     <link href="{{ asset('vendors/switchery/switchery.css') }}" rel="stylesheet">
 
+    <!-- Global JavaScript Variables -->
+    <script>
+        var baseUrl = "{{ url('/') }}";
+    </script>
   </head>
 
   <body class="nav-md">
@@ -51,7 +57,7 @@
       <div class="main_container">
         
         @include('layouts.adminLayout.admin_sidebar')
-        @include('layouts.adminLayout.admin_header')
+        {{-- @include('layouts.adminLayout.admin_header') --}}
        
         <div class="right_col" role="main">
 
@@ -77,6 +83,28 @@
          background-image: url({{  Config::getLogo() }});
          /*$urlFoto = url('/').'/fotos/'.$item->foto;*/
         }
+      /* Sweet Alert Dark Theme */
+      .sweet-alert {
+          background-color: #2A3F54 !important;
+          color: #fff !important;
+      }
+      
+      .sweet-alert h2, 
+      .sweet-alert p, 
+      .sweet-alert .sa-icon.sa-success .sa-fix {
+          color: #fff !important;
+      }
+      
+      .sweet-alert .sa-icon.sa-success::before, 
+      .sweet-alert .sa-icon.sa-success::after,
+      .sweet-alert .sa-icon.sa-success .sa-placeholder {
+          border-color: rgba(0, 0, 0, 0.15) !important;
+      }
+      
+      .sweet-alert button {
+          background-color: #337ab7 !important;
+          color: white !important;
+      }
     </style>
 
     <!-- jQuery -->
@@ -93,6 +121,8 @@
     <script src="{{ asset('vendors/toast/jquery.toast.js') }}"></script>
     <!-- Select2 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <!-- SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <!-- Custom Theme Scripts -->
     <script src="{{ asset('js/back_js/custom.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.2/jquery.form.min.js" integrity="sha256-2Pjr1OlpZMY6qesJM68t2v39t+lMLvxwpa8QlRjJroA=" crossorigin="anonymous"></script>
