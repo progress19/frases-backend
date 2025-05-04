@@ -5501,7 +5501,133 @@ div.dataTables_processing > div:last-child > div { background: var(--c-4) ; }
 
 .main_container {
   background-color: var(--c-1);
+  width: 99%;
 }
+
+/* Dashboard Widgets */
+.widget-small {
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+  padding: 1.5rem;
+  position: relative;
+  margin-bottom: 1rem;
+  min-height: 140px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.widget-small:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.widget-small .text-center {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.widget-small h4 i {
+  margin-right: 8px;
+  font-size: 1.2em;
+  vertical-align: middle;
+}
+
+.widget-small h4 {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+  white-space: nowrap;
+}
+
+.widget-small h4 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.widget-small h1 {
+  font-size: 3rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.widget-small.primary {
+  background: linear-gradient(135deg, #009688 0%, #004D40 100%);
+  color: #fff;
+}
+
+.widget-small.info {
+  background: linear-gradient(135deg, #03A9F4 0%, #0288D1 100%);
+  color: #fff;
+}
+
+.widget-small.success {
+  background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+  color: #fff;
+}
+
+.widget-small.purple {
+  background: linear-gradient(45deg, #6a1b9a, #8e24aa);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(106, 27, 154, 0.2);
+}
+
+.widget-small.purple:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(106, 27, 154, 0.4);
+}
+
+.widget-small.warning {
+  background: linear-gradient(135deg, #FF9800 0%, #FF6F00 100%);
+  color: #fff;
+  box-shadow: 0 2px 10px rgba(255, 152, 0, 0.2);
+}
+
+.widget-small.warning:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(255, 152, 0, 0.4);
+}
+
+/* Animation for counter updates */
+.zoom-effect {
+  animation: zoomPulse 0.5s ease;
+}
+
+@keyframes zoomPulse {
+  0% {
+      transform: scale(1);
+  }
+  50% {
+      transform: scale(1.2);
+  }
+  100% {
+      transform: scale(1);
+  }
+}
+
+/* Dark theme adjustments */
+.dark-theme .widget-small {
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.dark-theme .widget-small.primary {
+  background: linear-gradient(135deg, #00796B 0%, #004D40 100%);
+}
+
+.dark-theme .widget-small.info {
+  background: linear-gradient(135deg, #0288D1 0%, #01579B 100%);
+}
+
+.dark-theme .widget-small.success {
+  background: linear-gradient(135deg, #388E3C 0%, #1B5E20 100%);
+}
+
+
 
 /* dark login 2025 */
 

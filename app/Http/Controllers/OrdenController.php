@@ -26,8 +26,8 @@ class OrdenController extends Controller {
         ->editColumn('id', function ($orden) {
             return "<a class='btn-table hvr-grow' href='edit-orden/$orden->id'>$orden->id</a>"; 
         })
-        ->addColumn('fecha', function ($orden) {
-            return date('d/m/Y', strtotime($orden->created_at));
+        ->editColumn('fecha', function ($orden) {
+            return $orden->fecha ? date('d/m/Y', strtotime($orden->fecha)) : date('d/m/Y', strtotime($orden->created_at));
         })
         ->editColumn('cliente_id', function ($orden) {
             return "<a title='Ver cliente' href='edit-cliente/$orden->cliente_id'>  ".$orden->cliente->nombre." </a>"; 
@@ -64,10 +64,7 @@ class OrdenController extends Controller {
             return $orden->tipo_trabajo;
         })
         ->addColumn('acciones', function ($orden) {
-            $actions = '<a href="edit-orden/'.$orden->id.'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" title="Editar orden"></i></a> ';
-            $actions .= '<a href="pagos-by-orden/'.$orden->id.'" class="btn btn-xs btn-info"><i class="fa fa-credit-card" title="Ver pagos"></i></a> ';
-            $actions .= '<a href="add-pago-orden/'.$orden->id.'" class="btn btn-xs btn-success"><i class="fa fa-plus" title="Agregar pago"></i></a> ';
-            $actions .= '<a href="delete-orden/'.$orden->id.'" class="btn btn-xs btn-danger delReg"><i class="fa fa-trash" title="Eliminar orden"></i></a>';
+            $actions = '<a href="delete-orden/'.$orden->id.'" class="btn btn-xs btn-danger delReg"><i class="fa fa-trash" title="Eliminar orden"></i></a>';
             return $actions;
         })
         ->setRowAttr([ 'id' => function ($orden) { return $orden->id; } ])
@@ -78,8 +75,14 @@ class OrdenController extends Controller {
     public function editOrden(Request $request, $id = null) {
         if ($request->isMethod('post')) {
             $data = $request->all();
+            
+            // Convertir fecha de formato dd/mm/yyyy a Y-m-d para guardar en la DB
+            $fecha = \DateTime::createFromFormat('d/m/Y', $data['fecha']);
+            $fechaFormateada = $fecha ? $fecha->format('Y-m-d') : date('Y-m-d');
+            
             Orden::where(['id'=>$id])->update([
                 'cliente_id' => $data['cliente_id'],
+                'fecha' => $fechaFormateada,
                 'asunto' => $data['asunto'],
                 'descripcion' => $data['descripcion'],
                 'importe' => $data['importe'],
@@ -90,7 +93,7 @@ class OrdenController extends Controller {
             return redirect('/admin/view-ordenes')->with('flash_message','Orden actualizada correctamente...');
         }
         $orden = Orden::where(['id'=>$id])->first();
-        $clientes = Cliente::where('estado', 1)->pluck('nombre', 'id');
+        $clientes = Cliente::where('estado', 1)->orderBy('nombre', 'asc')->pluck('nombre', 'id');
         return view('admin.ordenes.edit_orden')->with(compact('orden', 'clientes'));
     }
 
@@ -102,6 +105,11 @@ class OrdenController extends Controller {
             $data = $request->all();
             $orden = new Orden;
             $orden->cliente_id = $data['cliente_id'];
+            
+            // Convertir fecha de formato dd/mm/yyyy a Y-m-d para guardar en la DB
+            $fecha = \DateTime::createFromFormat('d/m/Y', $data['fecha']);
+            $orden->fecha = $fecha ? $fecha->format('Y-m-d') : date('Y-m-d');
+            
             $orden->asunto = $data['asunto'];
             $orden->descripcion = $data['descripcion'] ?? '';
             $orden->importe = $data['importe'];
@@ -111,7 +119,7 @@ class OrdenController extends Controller {
             $orden->save();
             return redirect('/admin/view-ordenes')->with('flash_message','Orden creada correctamente...');
         }
-        $clientes = Cliente::where('estado', 1)->pluck('nombre', 'id');
+        $clientes = Cliente::where('estado', 1)->orderBy('nombre', 'asc')->pluck('nombre', 'id');
         return view('admin.ordenes.add_orden')->with(compact('clientes'));
     }
 

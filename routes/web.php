@@ -7,6 +7,7 @@ use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\TraduccionController; 
 use App\Http\Controllers\ConfigController; 
 use App\Http\Controllers\TipoController; 
+use App\Http\Controllers\DashboardController; // Añadimos la importación de DashboardController
 
 use App\Http\Controllers\Controller; 
 use App\Http\Controllers\HomeController; 
@@ -39,6 +40,11 @@ Route::group(['middleware' => ['auth']], function () {
 	//Route::get('/', function () { return view('admin/dashboard'); });
     //Route::get('/', 'Controller@index');
 	Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
+	
+	// Rutas para estadísticas del dashboard
+	Route::get('/admin/dashboard/stats', [AdminController::class, 'getStats']);
+	Route::get('/admin/dashboard/orden-stats', [AdminController::class, 'getOrdenStats']);
+	Route::get('/admin/dashboard/importe-stats', [AdminController::class, 'getImporteStats']);
 
 	/* DATATABLES */
 
@@ -113,11 +119,9 @@ Route::group(['middleware' => ['auth']], function () {
 	
 	//Pagos (Admin)
 	Route::match(['get','post'],'/admin/add-pago',[PagoController::class, 'addPago']);
-	Route::match(['get','post'],'/admin/add-pago-orden/{id}',[PagoController::class, 'addPagoOrden']);
 	Route::match(['get','post'],'/admin/edit-pago/{id}',[PagoController::class, 'editPago']);
 	Route::match(['get','post'],'/admin/delete-pago/{id}',[PagoController::class, 'deletePago']);
 	Route::get('/admin/view-pagos',[PagoController::class, 'index']);
-	Route::get('/admin/pagos-by-orden/{id}',[PagoController::class, 'pagosByOrden']);
 	Route::get('/admin/pagos-by-cliente/{id}',[PagoController::class, 'pagosByCliente']);
 	
 });

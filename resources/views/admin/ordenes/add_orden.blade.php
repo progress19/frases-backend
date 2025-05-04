@@ -27,7 +27,29 @@
                 <div class="col-md-3">
                     <div class="form-group">
                         {!! Form::label('cliente_id', 'Cliente') !!}
-                        {!! Form::select('cliente_id', $clientes, null, ['id' => 'cliente_id', 'class' => 'form-control', 'placeholder' => 'Seleccione cliente...']) !!}
+                        {!! Form::select('cliente_id', $clientes, null, [
+                            'id' => 'cliente_id',
+                            'class' => 'form-control select2',
+                            'placeholder' => 'Seleccione cliente...',
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Seleccione Cliente'
+                        ]) !!}
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        {!! Form::label('fecha', 'Fecha') !!}
+                        <div class="input-group date">
+                            {!! Form::text('fecha', date('d/m/Y'), [
+                                'id' => 'fecha', 
+                                'class' => 'form-control datepickers', 
+                                'placeholder' => 'dd/mm/aaaa',
+                                'readonly' => 'readonly'
+                            ]) !!}
+                        </div>
                     </div>
                 </div>
 
@@ -98,9 +120,32 @@
 @endsection
 
 @section('page-js-script')
+    <!-- Incluir TinyMCE desde CDN -->
+    <script src="https://cdn.tiny.cloud/1/u2ahwwjoqyrt21r4yawptscosrvgucfxlzxld2616d8r0ud2/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    
     <script>
         $(document).ready(function() {
+            $('.select2').select2();
             document.getElementById("cliente_id").focus();
+            
+            // Inicializar TinyMCE en modo oscuro
+            tinymce.init({
+                selector: '#descripcion',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                skin: 'oxide-dark',
+                content_css: 'dark',
+                height: 300
+            });
+
+            // Inicializar bootstrap-datepicker
+            $('.datepickers').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true,
+                language: 'es' 
+            });
         });
     </script>
 @stop

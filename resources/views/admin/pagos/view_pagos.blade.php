@@ -36,7 +36,6 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Cliente</th>
-                                    <th>Orden</th>
                                     <th>Monto</th>
                                     <th>Método de Pago</th>
                                     <th>Referencia</th>
@@ -80,7 +79,6 @@
                 "columns": [
                     {"data": "id"},
                     {"data": "cliente"},
-                    {"data": "orden"},
                     {"data": "monto"},
                     {"data": "metodo_pago"},
                     {"data": "referencia"},

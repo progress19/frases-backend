@@ -1,5 +1,6 @@
 @php
     use App\Fun;
+    use Carbon\Carbon;
 @endphp
 
 @extends('layouts.adminLayout.admin_design')
@@ -27,7 +28,28 @@
                 <div class="col-md-4">
                     <div class="form-group">
                         {!! Form::label('cliente_id', 'Cliente') !!}
-                        {!! Form::select('cliente_id', $clientes, $orden->cliente_id, ['id' => 'cliente_id', 'class' => 'form-control']) !!}
+                        {!! Form::select('cliente_id', $clientes, $orden->cliente_id, [
+                            'id' => 'cliente_id',
+                            'class' => 'form-control select2',
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Seleccione Cliente'
+                        ]) !!}
+                    </div>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        {!! Form::label('fecha', 'Fecha') !!}
+                        <div class="input-group date">
+                            {!! Form::text('fecha', isset($orden->fecha) ? date('d/m/Y', strtotime($orden->fecha)) : date('d/m/Y'), [
+                                'id' => 'fecha', 
+                                'class' => 'form-control datespicker', 
+                                'placeholder' => 'dd/mm/aaaa',
+                                'readonly' => 'readonly'
+                            ]) !!}
+                        </div>
                     </div>
                 </div>
 
@@ -98,9 +120,31 @@
 @endsection
 
 @section('page-js-script')
+    <!-- Incluir TinyMCE desde CDN -->
+    <script src="https://cdn.tiny.cloud/1/u2ahwwjoqyrt21r4yawptscosrvgucfxlzxld2616d8r0ud2/tinymce/7/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    
     <script>
         $(document).ready(function() {
+            $('.select2').select2();
             document.getElementById("cliente_id").focus();
+            
+            // Inicializar TinyMCE en modo oscuro
+            tinymce.init({
+                selector: '#descripcion',
+                plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
+                skin: 'oxide-dark',
+                content_css: 'dark',
+                height: 300
+            });
+
+            // Inicializar bootstrap-datepicker
+            $('.datespicker').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true,
+                todayHighlight: true
+            });
         });
     </script>
 @stop

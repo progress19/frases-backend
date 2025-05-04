@@ -22,7 +22,6 @@ class Pago extends Model
      * @var array
      */
     protected $fillable = [
-        'orden_id',
         'cliente_id',
         'monto',
         'metodo_pago',
@@ -30,14 +29,6 @@ class Pago extends Model
         'comentarios',
         'estado'
     ];
-
-    /**
-     * Get the orden associated with the payment.
-     */
-    public function orden()
-    {
-        return $this->belongsTo(Orden::class);
-    }
 
     /**
      * Get the cliente associated with the payment.

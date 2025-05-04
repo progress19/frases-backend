@@ -20,35 +20,25 @@
                     'files' => true,
                 ]) }}
 
-                <div class="col-md-6">
+                <div class="col-md-3">
                     <div class="form-group">
                         {!! Form::label('cliente_id', 'Cliente') !!}
-                        {!! Form::select('cliente_id', $clientes->pluck('nombre', 'id'), null, [
-                            'id' => 'cliente_id', 
-                            'class' => 'form-control',
-                            'placeholder' => 'Seleccione un cliente'
-                        ]) !!}
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {!! Form::label('orden_id', 'Orden') !!}
-                        {!! Form::select('orden_id', $ordenes->pluck('asunto', 'id'), null, [
-                            'id' => 'orden_id', 
-                            'class' => 'form-control',
-                            'placeholder' => 'Seleccione una orden'
+                        {!! Form::select('cliente_id', $clientes, null, [
+                            'id' => 'cliente_id',
+                            'class' => 'form-control select2',
+                            'placeholder' => 'Seleccione un cliente',
+                            'data-toggle' => 'tooltip',
+                            'title' => 'Seleccione Cliente'
                         ]) !!}
                     </div>
                 </div>
 
                 <div class="clearfix"></div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="form-group">
                         {!! Form::label('monto', 'Monto') !!}
                         <div class="input-group">
-                            <span class="input-group-addon">$</span>
                             {!! Form::number('monto', null, [
                                 'id' => 'monto', 
                                 'class' => 'form-control', 
@@ -59,7 +49,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <div class="form-group">
                         {!! Form::label('metodo_pago', 'Método de Pago') !!}
                         {!! Form::select('metodo_pago', [
@@ -73,7 +63,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <div class="form-group">
                         {!! Form::label('referencia', 'Referencia') !!}
                         {!! Form::text('referencia', null, ['id' => 'referencia', 'class' => 'form-control']) !!}
@@ -105,36 +95,16 @@
 @section('page-js-script')
     <script>
         $(document).ready(function() {
+            // Initialize select2
+            $('.select2').select2();
+            
             // Focus on first field
             document.getElementById("cliente_id").focus();
             
-            // When selecting a client, filter orders by that client
-            $('#cliente_id').change(function() {
-                var clienteId = $(this).val();
-                if (clienteId) {
-                    $.ajax({
-                        url: '/admin/get-ordenes-by-cliente/' + clienteId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#orden_id').empty();
-                            $('#orden_id').append('<option value="">Seleccione una orden</option>');
-                            $.each(data, function(key, value) {
-                                $('#orden_id').append('<option value="' + value.id + '">' + value.asunto + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#orden_id').empty();
-                    $('#orden_id').append('<option value="">Seleccione una orden</option>');
-                }
-            });
-
             // Form validation
             $("#add_pago").validate({
                 rules: {
                     cliente_id: "required",
-                    orden_id: "required",
                     monto: {
                         required: true,
                         number: true,
@@ -144,7 +114,6 @@
                 },
                 messages: {
                     cliente_id: "Por favor seleccione un cliente",
-                    orden_id: "Por favor seleccione una orden",
                     monto: {
                         required: "Por favor ingrese el monto",
                         number: "Por favor ingrese un número válido",

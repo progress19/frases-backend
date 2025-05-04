@@ -23,6 +23,7 @@ class Orden extends Model
      */
     protected $fillable = [
         'cliente_id',
+        'fecha',
         'asunto',
         'descripcion',
         'importe',

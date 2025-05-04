@@ -31,17 +31,6 @@
                     </div>
                 </div>
 
-                <div class="col-md-6">
-                    <div class="form-group">
-                        {!! Form::label('orden_id', 'Orden') !!}
-                        {!! Form::select('orden_id', $ordenes->pluck('asunto', 'id'), $pago->orden_id, [
-                            'id' => 'orden_id', 
-                            'class' => 'form-control',
-                            'placeholder' => 'Seleccione una orden'
-                        ]) !!}
-                    </div>
-                </div>
-
                 <div class="clearfix"></div>
 
                 <div class="col-md-4">
@@ -105,33 +94,10 @@
 @section('page-js-script')
     <script>
         $(document).ready(function() {
-            // When selecting a client, filter orders by that client
-            $('#cliente_id').change(function() {
-                var clienteId = $(this).val();
-                if (clienteId) {
-                    $.ajax({
-                        url: '/admin/get-ordenes-by-cliente/' + clienteId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(data) {
-                            $('#orden_id').empty();
-                            $('#orden_id').append('<option value="">Seleccione una orden</option>');
-                            $.each(data, function(key, value) {
-                                $('#orden_id').append('<option value="' + value.id + '">' + value.asunto + '</option>');
-                            });
-                        }
-                    });
-                } else {
-                    $('#orden_id').empty();
-                    $('#orden_id').append('<option value="">Seleccione una orden</option>');
-                }
-            });
-
             // Form validation
             $("#edit_pago").validate({
                 rules: {
                     cliente_id: "required",
-                    orden_id: "required",
                     monto: {
                         required: true,
                         number: true,
@@ -141,7 +107,6 @@
                 },
                 messages: {
                     cliente_id: "Por favor seleccione un cliente",
-                    orden_id: "Por favor seleccione una orden",
                     monto: {
                         required: "Por favor ingrese el monto",
                         number: "Por favor ingrese un número válido",

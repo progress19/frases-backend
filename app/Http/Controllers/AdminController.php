@@ -9,6 +9,7 @@ use App\User;
 use App\Config;
 use App\ImgsHome;
 use App\ApartamentoImagenes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -58,7 +59,121 @@ class AdminController extends Controller {
                 ->sum('frases.count');
         }
 
-        return view('admin.dashboard', compact('frases', 'frases_mostradas', 'tipos'));
+        // Estadísticas básicas para el dashboard
+        $basicStats = [
+            'totalOrdenes' => \App\Models\Orden::count(),
+            'ordenesCompletadas' => \App\Models\Orden::where('estado_orden', 'Completada')->count(),
+            'ordenesPendientes' => \App\Models\Orden::where('estado_orden', 'Pendiente')->count(),
+            'ordenesEnProgreso' => \App\Models\Orden::where('estado_orden', 'En progreso')->count(),
+            'ordenesCanceladas' => \App\Models\Orden::where('estado_orden', 'Cancelada')->count(),
+            'ingresosTotal' => \App\Models\Orden::sum('importe'),
+            'clientes' => \App\Models\Cliente::where('estado', 1)->count(),
+            'activeUsers' => \App\User::where('estado', 1)->count(),
+            'onlineUsers' => \App\User::where('estado', 1)->count()
+        ];
+
+        return view('admin.dashboard', compact('frases', 'frases_mostradas', 'tipos', 'basicStats'));
+    }
+
+    /**
+     * Get statistics for the dashboard
+     */
+    public function getStats()
+    {
+        $stats = [
+            'totalOrdenes' => \App\Models\Orden::count(),
+            'ordenesCompletadas' => \App\Models\Orden::where('estado_orden', 'Completada')->count(),
+            'ordenesPendientes' => \App\Models\Orden::where('estado_orden', 'Pendiente')->count(),
+            'ordenesEnProgreso' => \App\Models\Orden::where('estado_orden', 'En progreso')->count(),
+            'ordenesCanceladas' => \App\Models\Orden::where('estado_orden', 'Cancelada')->count(),
+            'ingresosTotal' => \App\Models\Orden::sum('importe'),
+            'clientes' => \App\Models\Cliente::where('estado', 1)->count(),
+            'activeUsers' => \App\User::where('estado', 1)->count(),
+            'onlineUsers' => \App\User::where('estado', 1)->count()
+        ];
+
+        return response()->json($stats);
+    }
+
+    /**
+     * Get order statistics by date for the dashboard chart
+     */
+    public function getOrdenStats(Request $request)
+    {
+        $range = $request->get('range', '30');
+        
+        if ($range !== 'all') {
+            $days = intval($range);
+            $startDate = \Carbon\Carbon::now()->subDays($days - 1)->startOfDay();
+            $endDate = \Carbon\Carbon::now()->endOfDay();
+        } else {
+            // Para "all", limitamos a los últimos 12 meses
+            $startDate = \Carbon\Carbon::now()->startOfMonth()->subMonths(11)->startOfDay();
+            $endDate = \Carbon\Carbon::now()->endOfDay();
+            $days = null;
+        }
+
+        // Usamos el campo fecha para agrupar las órdenes
+        $query = \App\Models\Orden::selectRaw('DATE(fecha) as date, COUNT(*) as count')
+                      ->whereBetween('fecha', [$startDate, $endDate])
+                      ->groupBy('date')
+                      ->orderBy('date');
+        
+        $data = $query->get();
+
+        // Preparamos el array de resultados, rellenando con ceros las fechas sin órdenes
+        if ($range !== 'all' && $days) {
+            $stats = [];
+            for ($i = 0; $i < $days; $i++) {
+                $date = \Carbon\Carbon::now()->subDays($days - 1 - $i)->format('Y-m-d');
+                $stats[$date] = 0;
+            }
+            foreach ($data as $row) {
+                if (isset($stats[$row->date])) {
+                    $stats[$row->date] = (int)$row->count;
+                }
+            }
+            $result = [];
+            foreach ($stats as $date => $count) {
+                $result[] = ['date' => $date, 'count' => $count];
+            }
+        } else {
+            $result = $data->map(function($item) {
+                return ['date' => $item->date, 'count' => (int)$item->count];
+            })->toArray();
+        }
+
+        return response()->json($result);
+    }
+
+    /**
+     * Obtener estadísticas de importes por día para el dashboard.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getImporteStats(Request $request)
+    {
+        $range = $request->input('range', '30');
+        
+        // Determinamos la fecha de inicio basada en el rango solicitado
+        $startDate = now();
+        if ($range !== 'all') {
+            $startDate = now()->subDays($range);
+        } else {
+            // Si es "all", tomamos los últimos 180 días como máximo
+            $startDate = now()->subDays(180);
+        }
+        
+        // Consultamos los importes totales por día
+        $stats = DB::table('ordenes')
+            ->select(DB::raw('DATE(fecha) as date, SUM(importe) as total'))
+            ->where('fecha', '>=', $startDate->startOfDay())
+            ->groupBy(DB::raw('DATE(fecha)'))
+            ->orderBy('date', 'ASC')
+            ->get();
+        
+        return response()->json($stats);
     }
 
     public function settings() {

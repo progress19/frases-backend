@@ -72,7 +72,7 @@
                     {data: 'acciones', name: 'acciones', orderable: false, searchable: false},
                 ],
                 language: {"url": "https://cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"},
-                order: [[0, 'desc']]
+                order: [[1, 'desc']]
             });
         });
  
